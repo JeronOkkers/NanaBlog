@@ -1,10 +1,10 @@
 // app/api/revalidate/route.ts
-import {revalidatePath} from 'next/cache'
-import {type NextRequest, NextResponse} from 'next/server'
-import {parseBody} from 'next-sanity/webhook'
+import { revalidatePath } from 'next/cache'
+import { type NextRequest, NextResponse } from 'next/server'
+import { parseBody } from 'next-sanity/webhook'
 
 // Get the webhook secret from environment variables
-const secret = process.env.SANITY_WEBHOOK_SECRET! 
+const secret = process.env.SANITY_WEBHOOK_SECRET!
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       req,
       secret,
     )
- 
+
     if (!isValidSignature) {
       return new Response('Invalid signature', { status: 401 })
     }
