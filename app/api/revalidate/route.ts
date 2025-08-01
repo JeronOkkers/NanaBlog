@@ -1,7 +1,7 @@
 // app/api/revalidate/route.ts
 import { revalidatePath } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
-import { parseBody } from 'next-sanity/webhook'
+import { parseBody } from '@sanity/webhook'
 
 // Get the webhook secret from environment variables
 const secret = process.env.SANITY_WEBHOOK_SECRET!
