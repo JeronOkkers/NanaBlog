@@ -14,11 +14,17 @@ interface Post {
 }
 
 // NOTE: We don't need the separate ParamsType anymore
-export default async function PostPage({
-  params: { slug }, // 2. DESTRUCTURE SLUG DIRECTLY HERE
-}: {
-  params: { slug: string };
-}) {
+export default async function PostPage(
+  props: {
+    params: Promise<{ slug: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    slug
+  } = params;
+
   // We can remove the `if (!params?.slug)` check because if slug is missing,
   // Next.js wouldn't be able to generate the page anyway.
 
@@ -38,12 +44,12 @@ export default async function PostPage({
 
       {/* 4. UPDATE THE JSX TO USE imageUrl */}
       {post.imageUrl && (
-        <div className="relative w-full h-96 rounded-lg overflow-hidden my-8 shadow-lg not-prose">
+        <div className="relative w-full aspect-video rounded-lg overflow-hidden my-8 shadow-lg not-prose">
           <Image
             src={post.imageUrl}
             alt={post.title}
             fill
-            className="object-cover"
+            className="object-contain"
             priority={true}
           />
         </div>

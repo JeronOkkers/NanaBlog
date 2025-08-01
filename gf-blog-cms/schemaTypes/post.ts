@@ -3,8 +3,8 @@ export default {
   title: 'Blog Post',
   type: 'document',
   fields: [
-    {name: 'title', type: 'string', title: 'Title'},
-    {name: 'slug', type: 'slug', title: 'Slug', options: {source: 'title'}},
+    {name: 'title', type: 'string', title: 'Title', validation: Rule => Rule.required(),},
+    {name: 'slug', type: 'slug', title: 'Slug', options: {source: 'title'}, validation: Rule => Rule.required()},
     {name: 'excerpt', type: 'text', title: 'Excerpt'},
     {name: 'mainImage', type: 'image', title: 'Main Image'},
     {
