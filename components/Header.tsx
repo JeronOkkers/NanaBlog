@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Amphora } from 'lucide-react';
+// import { Amphora } from 'lucide-react';
 
 export default function Header() {
   const [search, setSearch] = useState('');
@@ -20,7 +20,8 @@ export default function Header() {
     <header className="bg-white shadow">
       <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
         <Link href="/" className="flex items-center space-x-2 text-2xl font-serif font-bold text-gray-900">
-          <Amphora className="w-6 h-6" />
+          {/*<Amphora className="w-6 h-6" />*/}
+           <img src="/CustomLogo.svg" alt="Logo" className="w-10 h-10" />
           <span>Bloggr</span>
         </Link>
 
