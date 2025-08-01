@@ -42,8 +42,8 @@ export default async function PostPage({ params }: { params: { slug: string } })
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-      <article className="lg:col-span-2">
+    <div className="flex flex-col-reverse lg:flex-row gap-12">
+      <article className="lg:w-2/3">
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4 leading-tight">
             {post.title}
@@ -78,7 +78,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
         </div>
       </article>
 
-      <aside>
+       <aside className="lg:w-1/3">
         <Sidebar categories={categories} popular={popular} />
       </aside>
     </div>

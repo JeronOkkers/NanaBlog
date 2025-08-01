@@ -13,15 +13,15 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    <div className="flex flex-col-reverse lg:flex-row gap-12">
       {/* Main posts section */}
-      <section className="lg:col-span-2 space-y-10">
+      <section className="lg:w-2/3 space-y-10">
         <h1 className="text-4xl font-serif font-bold text-gray-900">Latest Posts</h1>
         <PostList posts={posts} />
       </section>
 
       {/* Sidebar */}
-      <aside>
+      <aside className="lg:w-1/3">
         <Sidebar categories={categories} popular={popular} />
       </aside>
     </div>
