@@ -1,74 +1,95 @@
 // app/posts/[slug]/page.tsx
-
 import { client } from '../../../lib/sanity';
-import { PortableText, PortableTextBlock } from '@portabletext/react';
-import Image from 'next/image';
-import { postBySlugQuery, allPostSlugsQuery } from '../../../lib/queries'; // Make sure this query is updated!
+import { allCategoriesQuery, allPostSlugsQuery, popularPostsQuery, postBySlugQuery } from '../../../lib/queries';
 import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import { PortableText, PortableTextBlock } from '@portabletext/react';
+import Sidebar from '../../../components/Sidebar';
 
-// 1. UPDATE THE POST INTERFACE
+// Define the shape of the post data
 interface Post {
   title: string;
-  imageUrl?: string; // Use the new 'imageUrl' field from our updated query
+  author?: string;
+  imageUrl?: string;
+  publishedAt: string;
   body: PortableTextBlock[];
 }
 
-// NOTE: We don't need the separate ParamsType anymore
-export default async function PostPage(
-  props: {
-    params: Promise<{ slug: string }>;
-  }
-) {
-  const params = await props.params;
+// This function generates the static paths at build time
+export async function generateStaticParams() {
+  const slugs: string[] = await client.fetch(allPostSlugsQuery);
+  return slugs.map((slug) => ({ slug }));
+}
 
-  const {
-    slug
-  } = params;
+// Helper function to format the date
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
 
-  // We can remove the `if (!params?.slug)` check because if slug is missing,
-  // Next.js wouldn't be able to generate the page anyway.
+export default async function PostPage({ params }: { params: { slug: string } }) {
+  const { slug } = params;
 
-  // 3. PASS THE DESTRUCTURED SLUG TO THE QUERY
-  const post: Post = await client.fetch(postBySlugQuery, { slug });
+  // Fetch the post and sidebar data in parallel
+  const [post, categories, popular] = await Promise.all([
+    client.fetch<Post>(postBySlugQuery, { slug }),
+    client.fetch(allCategoriesQuery),
+    client.fetch(popularPostsQuery),
+  ]);
 
   if (!post) {
     notFound();
   }
 
-  // You can remove the console.log now
-  // console.log('SANITY POST DATA:', JSON.stringify(post, null, 2));
-
   return (
-    <article className="prose mx-auto py-8">
-      <h1>{post.title}</h1>
-
-      {/* 4. UPDATE THE JSX TO USE imageUrl */}
-      {post.imageUrl && (
-        <div className="relative w-full aspect-video rounded-lg overflow-hidden my-8 shadow-lg not-prose">
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill
-            className="object-contain"
-            priority={true}
-          />
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      {/* Main post content */}
+      <article className="lg:col-span-2">
+        {/* Post Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4 leading-tight">
+            {post.title}
+          </h1>
+          {post.author && (
+            <p className="text-gray-600">
+              By <span className="font-semibold text-gray-800">{post.author}</span> on{' '}
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+            </p>
+          )}
         </div>
-      )}
-      <div className="mt-8">
-        <PortableText value={post.body} />
-      </div>
-    </article>
-  );
-}
 
-// You can probably leave your generateStaticParams function as is.
-// But if you get another error, you might need to destructure there too:
-// export async function generateStaticParams() {
-//   const posts: { slug: string }[] = await client.fetch(allPostSlugsQuery);
-//   return posts.map(({ slug }) => ({ slug }));
-// }
-// Next.js calls this at build time
-export async function generateStaticParams(): Promise<ParamsType[]> {
-  const slugs: string[] = await client.fetch(allPostSlugsQuery);
-  return slugs.map((slug) => ({ slug }));
+        {/* Main Image */}
+        {post.imageUrl && (
+          <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill
+              className="object-cover"
+              priority={true}
+            />
+          </div>
+        )}
+
+        {/* Post Body */}
+        <div className="prose prose-lg max-w-none prose-indigo">
+          <PortableText value={post.body} />
+        </div>
+
+        {/* Comments Section (Placeholder) */}
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <h2 className="text-2xl font-serif font-bold mb-6">Comments</h2>
+          <p className="text-gray-500">Comments section coming soon.</p>
+        </div>
+      </article>
+
+      {/* Sidebar */}
+      <aside>
+        <Sidebar categories={categories} popular={popular} />
+      </aside>
+    </div>
+  );
 }
