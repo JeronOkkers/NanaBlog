@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { Amphora } from 'lucide-react';
+// import { Amphora } from 'lucide-react';
 
 export default function Header() {
   const [search, setSearch] = useState('');
@@ -33,7 +33,7 @@ export default function Header() {
         {/* Main header row */}
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2 text-2xl font-serif font-bold text-gray-900">
-            <Amphora className="w-6 h-6 text-primary" />
+            <img src="/CustomLogo.svg" alt="Logo" className="w-10 h-10" />
             <span>Bloggr</span>
           </Link>
 
