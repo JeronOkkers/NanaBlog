@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { PortableText, PortableTextBlock } from '@portabletext/react';
 import Sidebar from '../../../components/Sidebar';
 
-// Define the shape of the post data
 interface Post {
   title: string;
   author?: string;
@@ -15,13 +14,11 @@ interface Post {
   body: PortableTextBlock[];
 }
 
-// This function generates the static paths at build time
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(allPostSlugsQuery);
   return slugs.map((slug) => ({ slug }));
 }
 
-// Helper function to format the date
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -30,15 +27,14 @@ function formatDate(dateString: string) {
   });
 }
 
-export default async function PostPage(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
+export default async function PostPage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
-  // Fetch the post and sidebar data in parallel
+  // Add tags to each Sanity fetch
   const [post, categories, popular] = await Promise.all([
-    client.fetch<Post>(postBySlugQuery, { slug }),
-    client.fetch(allCategoriesQuery),
-    client.fetch(popularPostsQuery),
+    client.fetch<Post>(postBySlugQuery, { slug }, { next: { tags: ['post'] } }),
+    client.fetch(allCategoriesQuery, {}, { next: { tags: ['category'] } }),
+    client.fetch(popularPostsQuery, {}, { next: { tags: ['post'] } }),
   ]);
 
   if (!post) {
@@ -47,9 +43,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-      {/* Main post content */}
       <article className="lg:col-span-2">
-        {/* Post Header */}
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4 leading-tight">
             {post.title}
@@ -62,7 +56,6 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           )}
         </div>
 
-        {/* Main Image */}
         {post.imageUrl && (
           <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-8 shadow-lg">
             <Image
@@ -75,19 +68,16 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           </div>
         )}
 
-        {/* Post Body */}
         <div className="prose prose-lg max-w-none prose-indigo">
           <PortableText value={post.body} />
         </div>
 
-        {/* Comments Section (Placeholder) */}
         <div className="mt-12 pt-8 border-t border-gray-200">
           <h2 className="text-2xl font-serif font-bold mb-6">Comments</h2>
           <p className="text-gray-500">Comments section coming soon.</p>
         </div>
       </article>
 
-      {/* Sidebar */}
       <aside>
         <Sidebar categories={categories} popular={popular} />
       </aside>

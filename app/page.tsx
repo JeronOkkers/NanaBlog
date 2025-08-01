@@ -5,10 +5,11 @@ import PostList from '../components/PostList';
 import Sidebar from '../components/Sidebar';
 
 export default async function HomePage() {
+  // Add tags to each Sanity fetch
   const [posts, categories, popular] = await Promise.all([
-    client.fetch(allPostsQuery),
-    client.fetch(allCategoriesQuery),
-    client.fetch(popularPostsQuery),
+    client.fetch(allPostsQuery, {}, { next: { tags: ['post'] } }),
+    client.fetch(allCategoriesQuery, {}, { next: { tags: ['category'] } }),
+    client.fetch(popularPostsQuery, {}, { next: { tags: ['post'] } }),
   ]);
 
   return (
