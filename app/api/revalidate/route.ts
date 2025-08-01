@@ -1,14 +1,13 @@
 // app/api/revalidate/route.ts
-import { revalidatePath } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 import { type NextRequest, NextResponse } from 'next/server'
 import { parseBody } from 'next-sanity/webhook'
 
-// Get the webhook secret from environment variables
 const secret = process.env.SANITY_WEBHOOK_SECRET!
 
 export async function POST(req: NextRequest) {
   try {
-    const { body, isValidSignature } = await parseBody<{ _type: string, slug?: { current: string }}>(
+    const { body, isValidSignature } = await parseBody<{ _type: string }>(
       req,
       secret,
     )
@@ -21,14 +20,10 @@ export async function POST(req: NextRequest) {
       return new Response('Bad Request', { status: 400 })
     }
 
-    // Revalidate the page based on the document type
-    const path = body.slug ? `/posts/${body.slug.current}` : '/'
-    revalidatePath(path)
+    // Revalidate the 'post' tag every time a post is changed
+    revalidateTag(body._type)
 
-    // Also revalidate the homepage on any post change
-    revalidatePath('/')
-
-    return NextResponse.json({ revalidated: true, now: Date.now(), path })
+    return NextResponse.json({ revalidated: true, now: Date.now() })
   } catch (err: any) {
     console.error(err)
     return new Response(err.message, { status: 500 })
