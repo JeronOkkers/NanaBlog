@@ -26,7 +26,7 @@ interface Post {
 
 // Define the shape of the props for the page
 interface PostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // Custom components for rendering Sanity's rich text
@@ -74,7 +74,8 @@ function formatDate(dateString: string) {
   });
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage(props: PostPageProps) {
+  const params = await props.params;
   const { slug } = params;
 
   const [post, categories, popular] = await Promise.all([

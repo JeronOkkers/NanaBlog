@@ -32,12 +32,18 @@ export default {
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'category' }] }],
     },
-    { name: 'body', title: 'Body', type: 'blockContent' },
+    // Portable Text (rich block editor)
+    {
+      name: 'body',
+      type: 'blockContent',
+      title: 'Rich Text Body',
+    },
     // ADD THE NEW MARKDOWN FIELD
     {
       name: 'markdownContent',
       title: 'Markdown Content',
       type: 'markdown',
+      description: 'GitHub-flavored Markdown with live preview',
     },
     { name: 'publishedAt', type: 'datetime', title: 'Publish date' },
   ],
