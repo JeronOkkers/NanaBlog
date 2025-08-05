@@ -32,7 +32,7 @@ export default {
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'category' }] }],
     },
-    { name: 'body', type: 'array', of: [{ type: 'block' }] },
+    { name: 'body', title: 'Body', type: 'blockContent' },
     { name: 'publishedAt', type: 'datetime', title: 'Publish date' },
   ],
 };

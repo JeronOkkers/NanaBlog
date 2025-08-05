@@ -52,7 +52,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           </h1>
           {post.author && (
             // ADDED DARK MODE TEXT COLORS
-            (<p className="text-gray-600 dark:text-gray-400">By <span className="font-semibold text-gray-800 dark:text-gray-200">{post.author}</span>on{' '}
+            (<p className="text-gray-600 dark:text-gray-400">By <span className="font-semibold text-gray-800 dark:text-gray-200">{post.author}</span> on{' '}
               <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             </p>)
           )}
@@ -64,7 +64,7 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
               src={post.imageUrl}
               alt={post.title}
               fill
-              className="object-cover"
+              className="object-contain"
               priority={true}
             />
           </div>
