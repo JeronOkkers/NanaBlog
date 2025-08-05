@@ -1,4 +1,5 @@
 // app/posts/[slug]/page.tsx
+//post page test
 import { client } from '../../../lib/sanity';
 import { allCategoriesQuery, allPostSlugsQuery, popularPostsQuery, postBySlugQuery } from '../../../lib/queries';
 import { notFound } from 'next/navigation';
