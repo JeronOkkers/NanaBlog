@@ -5,11 +5,11 @@ export default function Sidebar({ categories, popular }) {
   return (
     <div className="space-y-10">
       {/* Search */}
-      <div className="bg-gray-100 p-4 rounded-lg">
+      <div className="bg-[var(--muted-bg)] p-4 rounded-lg transition-colors duration-300">
         <input
           type="text"
           placeholder="Search posts"
-          className="w-full px-3 py-2 rounded bg-gray-100 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          className="w-full px-3 py-2 rounded bg-[var(--muted-bg)] text-sm placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-300"
         />
       </div>
 

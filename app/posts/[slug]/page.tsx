@@ -31,7 +31,6 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
   const params = await props.params;
   const { slug } = params;
 
-  // Add tags to each Sanity fetch
   const [post, categories, popular] = await Promise.all([
     client.fetch<Post>(postBySlugQuery, { slug }, { next: { tags: ['post'] } }),
     client.fetch(allCategoriesQuery, {}, { next: { tags: ['category'] } }),
@@ -46,14 +45,15 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
     <div className="flex flex-col-reverse lg:flex-row gap-12">
       <article className="lg:w-2/3">
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4 leading-tight">
+          {/*REMOVED HARDCODED TEXT COLOR */}
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4 leading-tight">
             {post.title}
           </h1>
           {post.author && (
-            <p className="text-gray-600">
-              By <span className="font-semibold text-gray-800">{post.author}</span> on{' '}
+            // ADDED DARK MODE TEXT COLORS
+            (<p className="text-gray-600 dark:text-gray-400">By <span className="font-semibold text-gray-800 dark:text-gray-200">{post.author}</span>on{' '}
               <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-            </p>
+            </p>)
           )}
         </div>
 
@@ -69,17 +69,18 @@ export default async function PostPage(props: { params: Promise<{ slug: string }
           </div>
         )}
 
-        <div className="prose prose-lg max-w-none prose-indigo">
+        {/* ADDED dark:prose-invert TO HANDLE ALL TYPOGRAPHY STYLES */}
+        <div className="prose prose-lg max-w-none prose-indigo dark:prose-invert">
           <PortableText value={post.body} />
         </div>
 
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        {/* ADDED DARK MODE BORDER AND TEXT COLORS */}
+        <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
           <h2 className="text-2xl font-serif font-bold mb-6">Comments</h2>
-          <p className="text-gray-500">Comments section coming soon.</p>
+          <p className="text-gray-500 dark:text-gray-400">Comments section coming soon.</p>
         </div>
       </article>
-
-       <aside className="lg:w-1/3">
+      <aside className="lg:w-1/3">
         <Sidebar categories={categories} popular={popular} />
       </aside>
     </div>

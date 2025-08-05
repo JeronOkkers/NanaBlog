@@ -11,18 +11,29 @@
 
 /* 3. Your custom CSS variables */
 :root {
-  --background: #f9fafb;
-  --foreground: #111827;
-  --muted-bg: #f3f4f6;
+  --background: #f9fafb; /* Light mode background */
+  --foreground: #111827; /* Light mode text */
+  --muted-bg: #f3f4f6;   /* Light mode muted background */
+  --card-bg: #ffffff;    /* Light mode card background */
   --primary: #6366f1;
+}
+
+/* BLOCK FOR DARK MODE */
+:root[data-theme="dark"] {
+  --background: #111827; /* Dark mode background */
+  --foreground: #f9fafb; /* Dark mode text */
+  --muted-bg: #1f2937;   /* Dark mode muted background */
+  --card-bg: #1f2937;    /* Dark mode card background */
+  --primary: #818cf8;
 }
   
 /* 4. Body styles */
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* 5. Headings */

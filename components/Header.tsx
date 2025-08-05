@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { MagnifyingGlassIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import ThemeToggle from './ThemeToggle'; // Import the new toggle
+
 // import { Amphora } from 'lucide-react';
 
 export default function Header() {
@@ -28,11 +30,11 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-[var(--card-bg)] shadow-sm sticky top-0 z-50 transition-colors duration-300">
       <div className="container mx-auto px-4 py-4">
         {/* Main header row */}
         <div className="flex justify-between items-center">
-          <Link href="/" className="flex items-center space-x-2 text-2xl font-serif font-bold text-gray-900">
+          <Link href="/" className="flex items-center space-x-2 text-2xl font-serif font-bold">
             <img src="/CustomLogo.svg" alt="Logo" className="w-10 h-10" />
             <span>Bloggr</span>
           </Link>
@@ -62,6 +64,7 @@ export default function Header() {
                 <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
               </button>
             </form>
+            <ThemeToggle /> 
           </nav>
 
           {/* Mobile Menu Button */}
@@ -103,6 +106,9 @@ export default function Header() {
                 <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
               </button>
             </form>
+            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <ThemeToggle />
+            </div>
           </nav>
         )}
       </div>

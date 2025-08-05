@@ -1,10 +1,12 @@
+// app/contact/page.tsx
+
 export default function ContactPage() {
   return (
     <div className="max-w-2xl mx-auto py-12">
       <h1 className="text-3xl font-serif font-bold mb-6">Contact Us</h1>
       <form className="space-y-6">
         <div>
-          <label htmlFor="name" className="block mb-2 font-medium text-gray-700">
+          <label htmlFor="name" className="block mb-2 font-medium">
             Name
           </label>
           <input
@@ -12,12 +14,12 @@ export default function ContactPage() {
             name="name"
             type="text"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-2 rounded-lg bg-[var(--muted-bg)] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-colors"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block mb-2 font-medium text-gray-700">
+          <label htmlFor="email" className="block mb-2 font-medium">
             Email
           </label>
           <input
@@ -25,12 +27,12 @@ export default function ContactPage() {
             name="email"
             type="email"
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-2 rounded-lg bg-[var(--muted-bg)] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-colors"
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block mb-2 font-medium text-gray-700">
+          <label htmlFor="message" className="block mb-2 font-medium">
             Message
           </label>
           <textarea
@@ -38,13 +40,13 @@ export default function ContactPage() {
             name="message"
             rows={5}
             required
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full px-4 py-2 rounded-lg bg-[var(--muted-bg)] border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] transition-colors"
           ></textarea>
         </div>
 
         <button
           type="submit"
-          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-indigo-700 transition"
+          className="px-6 py-2 bg-[var(--primary)] text-white font-semibold rounded-lg hover:opacity-90 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--background)] focus:ring-[var(--primary)]"
         >
           Send Message
         </button>
