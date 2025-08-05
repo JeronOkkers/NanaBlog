@@ -33,6 +33,12 @@ export default {
       of: [{ type: 'reference', to: [{ type: 'category' }] }],
     },
     { name: 'body', title: 'Body', type: 'blockContent' },
+    // ADD THE NEW MARKDOWN FIELD
+    {
+      name: 'markdownContent',
+      title: 'Markdown Content',
+      type: 'markdown',
+    },
     { name: 'publishedAt', type: 'datetime', title: 'Publish date' },
   ],
 };

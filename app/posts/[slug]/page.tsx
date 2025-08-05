@@ -11,22 +11,25 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import type { PortableTextBlock } from '@portabletext/types';
 import type { PortableTextComponents } from '@portabletext/react';
+import ReactMarkdown from 'react-markdown';
 import Sidebar from '../../../components/Sidebar';
 
+// Interface now includes both possible body types
 interface Post {
   title: string;
   author?: string;
   imageUrl?: string;
   publishedAt: string;
   body: PortableTextBlock[];
+  markdownContent?: string;
 }
 
 // Define the shape of the props for the page
 interface PostPageProps {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
-// Define how each block, list, and mark should render
+// Custom components for rendering Sanity's rich text
 const ptComponents: PortableTextComponents = {
   block: {
     h2: ({ children }) => <h2 className="text-3xl font-serif font-bold mt-8 mb-4">{children}</h2>,
@@ -47,7 +50,7 @@ const ptComponents: PortableTextComponents = {
     em: ({ children }) => <em>{children}</em>,
     link: ({ children, value }) => (
       <a
-        href={value.href}
+        href={value?.href}
         className="text-primary hover:underline"
         target="_blank"
         rel="noopener noreferrer"
@@ -71,8 +74,7 @@ function formatDate(dateString: string) {
   });
 }
 
-export default async function PostPage(props: PostPageProps) {
-  const params = await props.params;
+export default async function PostPage({ params }: PostPageProps) {
   const { slug } = params;
 
   const [post, categories, popular] = await Promise.all([
@@ -112,9 +114,13 @@ export default async function PostPage(props: PostPageProps) {
           </div>
         )}
 
-        {/* The wrapping div no longer needs the "prose" classes */}
-        <div>
-          <PortableText value={post.body} components={ptComponents} />
+        {/* Conditionally render content based on which field is used */}
+        <div className="prose prose-lg max-w-none prose-indigo dark:prose-invert">
+          {post.body && post.body.length > 0 ? (
+            <PortableText value={post.body} components={ptComponents} />
+          ) : post.markdownContent ? (
+            <ReactMarkdown>{post.markdownContent}</ReactMarkdown>
+          ) : null}
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
